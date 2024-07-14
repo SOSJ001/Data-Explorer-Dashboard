@@ -33,7 +33,7 @@
 </script>
 
 
-<div class="h-screen w-screen overflow-hidden">
+<div class="h-screen w-screen overflow-x-hidden overflow-y-auto">
 	
 	<div class="h- m-5">
 		<Navbar>
