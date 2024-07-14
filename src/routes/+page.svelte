@@ -15,7 +15,7 @@
 	let transactionRows: any
 	$: reactivetransactionRows = transactionRows
 	let click = async() => {
-		 transactionRows = await fetchAccountHistory(new PublicKey(value),$connection,3,null);
+		 transactionRows = await fetchAccountHistory(new PublicKey(value),$connection,10,null);
 
 		// identifyInput(value);
 	};
