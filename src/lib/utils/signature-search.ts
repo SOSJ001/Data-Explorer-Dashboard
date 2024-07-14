@@ -12,17 +12,15 @@ export async function fetchAccountHistory(
 				limit,
 				before
 			});
-            // console.log(connection);
 
 			let transactionRows = [];
 			for (const signature of signatures) {
 				const transaction: any = await connection.getConfirmedTransaction(signature.signature);
                 transaction.signature = signature.signature;  
-                // console.log('testing transaction \n', transaction);
 				transactionRows.push(transaction);
             }
             
-            console.log(transactionRows)
+            return transactionRows
 
 
             

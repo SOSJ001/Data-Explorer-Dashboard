@@ -12,14 +12,11 @@
 	$: searchResult = true; //keep track if the search result
 	let value: string; //search value
 	$: reactiveValue = value;
-	// $:{
-	// 	if(reactiveValue?.length == 0){
-	// 		typing = false
-	// 	}
-	// }
+	let transactionRows: any
+	$: reactivetransactionRows = transactionRows
+	let click = async() => {
+		 transactionRows = await fetchAccountHistory(new PublicKey(value),$connection,3,null);
 
-	let click = () => {
-		fetchAccountHistory(new PublicKey(value),$connection,3,null);
 		// identifyInput(value);
 	};
 </script>
@@ -43,7 +40,7 @@
 	{#if searchResult}
 		<!-- search display -->
 		<!-- <SearchLoader /> -->
-		<SearchTable />
+		<SearchTable transactionRows={reactivetransactionRows}/>
 		<!-- <div>showing search result</div> -->
 		<!-- search display ends  -->
 	{:else}
