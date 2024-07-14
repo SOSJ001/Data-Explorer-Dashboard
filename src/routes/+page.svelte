@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { clusterApiUrl, PublicKey } from '@solana/web3.js';
+	import type { ParsedTransactionWithMeta, TransactionSignature } from '@solana/web3.js';
 	import { Search, Button } from 'flowbite-svelte';
 	import Card from '$lib/components/Card.svelte';
 	import { identifyInput } from '$lib/utils/search';
@@ -18,7 +19,12 @@
 	import EpochProgress from '$lib/components/EpochProgress.svelte';
 	import heroImage from '$lib/image/image.jpg';
 	import { writable } from 'svelte/store';
+	import TransactionInfo from '$lib/components/Transaction-Info.svelte';
+	import { getTransactionInfo } from '$lib/utils/transactionInfo';
+	import Spinner from '$lib/components/Spinner.svelte';
 
+	let transaction = writable(false);
+	let txnResult: any
 	$: typing = false; //keep track if the input field
 	let searchResult = writable(false); //keep track ff the search result
 	let value: string; //search value
@@ -26,11 +32,11 @@
 	let transactionRows: any;
 	$: reactivetransactionRows = transactionRows; //aking tetransaction rows reactive
 	let back = () => {
-			// console.log("Backed clicked")
-			typing = false;
-			$beforeVariable = undefined;
-			reactivetransactionRows = [];
-			$searchResult = !$searchResult;
+		// console.log("Backed clicked")
+		typing = false;
+		$beforeVariable = undefined;
+		reactivetransactionRows = [];
+		$searchResult = !$searchResult;
 	};
 	let click = async () => {
 		if (reactiveValue === undefined) {
@@ -52,7 +58,7 @@
 						);
 						break;
 					case 2:
-						alert('this is a transaction');
+						alert('this is a Transaction');
 						// if the search string is a transaction do this
 						break;
 					case 3:
@@ -101,13 +107,25 @@
 			<div class="flex flex-row gap-3">
 				<Button on:click={click}>More</Button>
 				<Button on:click={back}>Back</Button>
-
-				
 			</div>
 		</div>
 
 		<!-- <div>showing search result</div> -->
 		<!-- search display ends  -->
+	{:else if $transaction}
+		{#await txnResult}
+			<Spinner />
+		{:then data}
+			<TransactionInfo>
+				<div class="flex w-full flex-row items-center justify-center" slot="data">
+					<div class="flex w-full justify-between md:flex-row">
+						<div class="font-mono font-bold">Signature</div>
+						<div class="font-mono font-bold"></div>
+					</div>
+				</div>
+			</TransactionInfo>
+			<Button on:click={back}>Back</Button>
+		{/await}
 	{:else}
 		<!-- showing typing status -->
 		{#if typing}

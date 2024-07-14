@@ -17,7 +17,7 @@ export function identifyInput(queryInput: string) {
 				// case value for Account will be 1
 				return { searchValue: search, case: 1 };
 			} else if (decoded.length === 64) {
-				console.log('transaction', search);
+				// console.log('transaction', search);
 				// case value for Transaction will be 2
 				return { searchValue: search, case: 2 };
 			}
