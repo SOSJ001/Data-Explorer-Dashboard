@@ -1,10 +1,13 @@
 import { Connection, PublicKey, type Cluster } from '@solana/web3.js';
+import { writable } from 'svelte/store';
+export let prevBeforeVariable = writable();
+export let beforeVariable = writable();
 //@ts-ignore
 export async function fetchAccountHistory(
 	pubkey: PublicKey,
 	connection: Connection,
 	limit: number,
-	before: any
+	before?: any
 ) {
 	try {
 		{
@@ -16,21 +19,14 @@ export async function fetchAccountHistory(
 			let transactionRows = [];
 			for (const signature of signatures) {
 				const transaction: any = await connection.getConfirmedTransaction(signature.signature);
+				beforeVariable.set(signature.signature); //setting the more button
                 transaction.signature = signature.signature;  
 				transactionRows.push(transaction);
-            }
+			}
+			// console.log('before after', before);
             
             return transactionRows
 
-
-            
-			// let pub = await Promise.all(
-			// 	signatures.map((signature) => connection.getConfirmedTransaction(signature.signature))
-			// );
-			// for (let index = 0; index < pub.length; index++) {
-			// 	const element = pub[index];
-			// console.log("status ", element?.transaction.instructions)
-			// console.log(new Date(element?.blockTime? * 1000).toLocaleString()) //accessing the elementon the pub array too
 		}
 	} catch (error) {
 		console.log('This is th error ', error);

@@ -10,7 +10,7 @@
     import {LAMPORTS_PER_SOL} from "@solana/web3.js"
 	export let transactionRows: any;
 	$: reactiveTransactionRows = transactionRows;
-	$: console.log('table ', reactiveTransactionRows);
+	// $: console.log('table ', reactiveTransactionRows);
 </script>
 <div class="w-full  overflow-y-auto h-2/3">
 <Table hoverable={true}>
@@ -26,9 +26,9 @@
 	<TableBody tableBodyClass="divide-y overflow-y-auto">
         {#if reactiveTransactionRows !== undefined }
             {#each reactiveTransactionRows as row, i}
-			<TableBodyRow class="bg-gray-500 hover:bg-opacity-25">
+			<TableBodyRow class="bg-gray-700 hover:bg-opacity-25">
                 <TableBodyCell class="text-gray-200"
-					><slot name="signature">{i+1}</slot></TableBodyCell
+					><slot name="signature">*</slot></TableBodyCell
 				>
 				<TableBodyCell class="text-gray-200"
 					><slot name="signature">{row.signature}</slot></TableBodyCell

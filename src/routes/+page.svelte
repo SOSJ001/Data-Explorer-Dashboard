@@ -7,21 +7,29 @@
 	import SearchTable from '$lib/components/SearchTable.svelte';
 	import { connection } from '$lib/utils/connection';
 	import { fetchAccountHistory } from '$lib/utils/signature-search';
+	import { beforeVariable } from '$lib/utils/signature-search';
 
 	$: typing = false; //keep track if the input field
-	$: searchResult = true; //keep track if the search result
+	$: searchResult = false; //keep track ff the search result
 	let value: string; //search value
 	$: reactiveValue = value;
-	let transactionRows: any
-	$: reactivetransactionRows = transactionRows
-	let click = async() => {
-		 transactionRows = await fetchAccountHistory(new PublicKey(value),$connection,10,null);
+	let transactionRows: any;
+	$: reactivetransactionRows = transactionRows;
+	let click = async () => {
+		if(reactiveValue.length > 0)searchResult = true ;
+		console.log("here");
+		transactionRows = await fetchAccountHistory(
+			new PublicKey(value),
+			$connection,
+			7,
+			$beforeVariable
+		);
 
 		// identifyInput(value);
 	};
 </script>
 
-<div class="w-full h-full mt-10 space-y-5 px-5 md:px-20 overflow-x-hidden overflow-y-hidden">
+<div class="mt-10 h-full w-full space-y-5 overflow-x-hidden overflow-y-hidden px-5 md:px-20">
 	<!-- search field -->
 	<Search
 		on:input={() => {
@@ -29,6 +37,9 @@
 			//set typing === false if string.length ===0
 			if (reactiveValue?.length == 0) {
 				typing = false;
+				$beforeVariable = undefined;
+				reactivetransactionRows = [];
+				searchResult = !searchResult
 			}
 		}}
 		bind:value
@@ -40,14 +51,20 @@
 	{#if searchResult}
 		<!-- search display -->
 		<!-- <SearchLoader /> -->
-		<SearchTable transactionRows={reactivetransactionRows}/>
+		<div class="flex h-full flex-col items-center">
+			<SearchTable transactionRows={reactivetransactionRows} />
+			<div class="flex flex-row gap-3">
+				<Button on:click={click}>More</Button>
+			</div>
+		</div>
+
 		<!-- <div>showing search result</div> -->
 		<!-- search display ends  -->
 	{:else}
 		<!-- showing typing status -->
 		{#if typing}
 			<div>
-				<Button class="w-full">{reactiveValue}</Button>
+				<Button on:click={click} class="w-full">{reactiveValue}</Button>
 			</div>
 		{/if}
 
