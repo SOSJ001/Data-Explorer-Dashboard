@@ -8,6 +8,11 @@
 	import { connection } from '$lib/utils/connection';
 	import { fetchAccountHistory } from '$lib/utils/signature-search';
 	import { beforeVariable } from '$lib/utils/signature-search';
+	import Supply from '$lib/components/Supply.svelte';
+	import TotalSupply from '$lib/components/TotalSupply.svelte';
+	import TransactionCount from '$lib/components/TransactionCount.svelte';
+	import VoteAccount from '$lib/components/VoteAccount.svelte';
+	import DeliquentVote from '$lib/components/DeliquentVote.svelte';
 
 	$: typing = false; //keep track if the input field
 	$: searchResult = false; //keep track ff the search result
@@ -16,8 +21,8 @@
 	let transactionRows: any;
 	$: reactivetransactionRows = transactionRows;
 	let click = async () => {
-		if(reactiveValue.length > 0)searchResult = true ;
-		console.log("here");
+		if (reactiveValue.length > 0) searchResult = true;
+		console.log('here');
 		transactionRows = await fetchAccountHistory(
 			new PublicKey(value),
 			$connection,
@@ -39,7 +44,7 @@
 				typing = false;
 				$beforeVariable = undefined;
 				reactivetransactionRows = [];
-				searchResult = !searchResult
+				searchResult = !searchResult;
 			}
 		}}
 		bind:value
@@ -70,9 +75,29 @@
 
 		<!-- card display -->
 		<div class="flex flex-col space-y-3 md:flex-row md:justify-between">
-			<Card />
+			<Card>
+				<span slot="title">Circulating Supply</span>
+				<span class=" h-full" slot="data">
+					<span class="text-2xl"><Supply /> </span>
+					<span class="flex gap-5">
+						<span> Total Supply: </span>
+						<TotalSupply /></span
+					>
+				</span>
+			</Card>
 			<Card>
 				<span slot="title">Transaction Count</span>
+				<span class=" h-full" slot="data">
+					<span class="text-2xl"><TransactionCount/> </span>
+					<span class="flex gap-5">
+						<span> Current Vote: </span>
+						<VoteAccount/></span
+					>
+					<span class="flex gap-5">
+						<span> Deliquent Vote: </span>
+						<DeliquentVote/></span
+					>
+				</span>
 			</Card>
 			<Card />
 		</div>
