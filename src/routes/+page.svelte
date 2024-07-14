@@ -3,7 +3,6 @@
 	import { Search, Button } from 'flowbite-svelte';
 	import Card from '$lib/components/Card.svelte';
 	import { identifyInput } from '$lib/utils/search';
-	import SearchLoader from '$lib/components/SearchLoader.svelte';
 	import SearchTable from '$lib/components/SearchTable.svelte';
 	import { connection } from '$lib/utils/connection';
 	import { fetchAccountHistory } from '$lib/utils/signature-search';
@@ -18,13 +17,21 @@
 	import BlockHeight from '$lib/components/BlockHeight.svelte';
 	import EpochProgress from '$lib/components/EpochProgress.svelte';
 	import heroImage from '$lib/image/image.jpg';
+	import { writable } from 'svelte/store';
 
 	$: typing = false; //keep track if the input field
-	$: searchResult = false; //keep track ff the search result
+	let searchResult = writable(false); //keep track ff the search result
 	let value: string; //search value
 	$: reactiveValue = value;
 	let transactionRows: any;
 	$: reactivetransactionRows = transactionRows; //aking tetransaction rows reactive
+	let back = () => {
+			// console.log("Backed clicked")
+			typing = false;
+			$beforeVariable = undefined;
+			reactivetransactionRows = [];
+			$searchResult = !$searchResult;
+	};
 	let click = async () => {
 		if (reactiveValue === undefined) {
 			// if value is not undefined proceed
@@ -35,7 +42,7 @@
 				const returnedValue = identifyInput(value); //identify the search value
 				switch (returnedValue?.case) {
 					case 1:
-						searchResult = true;
+						$searchResult = true;
 						console.log('here');
 						transactionRows = await fetchAccountHistory(
 							new PublicKey(value),
@@ -45,11 +52,11 @@
 						);
 						break;
 					case 2:
-						alert ("this is a transaction");
+						alert('this is a transaction');
 						// if the search string is a transaction do this
 						break;
 					case 3:
-						alert ("this is a domain");
+						alert('this is a domain');
 						// if the search string is a domain do this
 						break;
 
@@ -75,7 +82,7 @@
 				typing = false;
 				$beforeVariable = undefined;
 				reactivetransactionRows = [];
-				searchResult = false;
+				$searchResult = false;
 			}
 		}}
 		bind:value
@@ -84,8 +91,7 @@
 		<Button on:click={click}>Search</Button>
 		<!-- onclick of the search button-->
 	</Search>
-
-	{#if searchResult}
+	{#if $searchResult}
 		<!-- search display -->
 		<!-- <SearchLoader /> -->
 		<div class="flex h-2/3 flex-col items-center">
@@ -94,6 +100,9 @@
 			<!-- button for next below -->
 			<div class="flex flex-row gap-3">
 				<Button on:click={click}>More</Button>
+				<Button on:click={back}>Back</Button>
+
+				
 			</div>
 		</div>
 
