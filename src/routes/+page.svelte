@@ -4,6 +4,9 @@
 	import Card from '$lib/components/Card.svelte';
 	import { identifyInput } from '$lib/utils/search';
 	import SearchLoader from '$lib/components/SearchLoader.svelte';
+	import SearchTable from '$lib/components/SearchTable.svelte';
+	import { connection } from '$lib/utils/connection';
+	import { fetchAccountHistory } from '$lib/utils/signature-search';
 
 	$: typing = false; //keep track if the input field
 	$: searchResult = true; //keep track if the search result
@@ -16,7 +19,8 @@
 	// }
 
 	let click = () => {
-		identifyInput(value);
+		fetchAccountHistory(new PublicKey(value),$connection,3,null);
+		// identifyInput(value);
 	};
 </script>
 
@@ -37,8 +41,9 @@
 	</Search>
 
 	{#if searchResult}
-	<!-- search display -->
-		<SearchLoader />
+		<!-- search display -->
+		<!-- <SearchLoader /> -->
+		<SearchTable />
 		<!-- <div>showing search result</div> -->
 		<!-- search display ends  -->
 	{:else}

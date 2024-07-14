@@ -9,7 +9,7 @@ const devnet = 'devnet';
 
 
 // creating a writeable connection store
-export let connection = writable(new Connection(clusterApiUrl(mainnet)));
+export let connection = writable(new Connection(clusterApiUrl(devnet)));
 
 export function setChainId(clusterNumber:number) {
     switch (clusterNumber) {
