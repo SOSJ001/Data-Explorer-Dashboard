@@ -32,7 +32,7 @@
 	}; //   transition ends
 </script>
 
-<div class="w-screen">
+<div class="w-screen h-screen overflow-hidden">
 	<Navbar>
 		<span slot="clusterDrawer">
 			<Button on:click={() => {hidden6 = false;}}>{cluster}</Button>

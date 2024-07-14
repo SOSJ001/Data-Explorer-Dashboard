@@ -21,7 +21,7 @@
 	};
 </script>
 
-<div class="w-screen` mt-10 space-y-5 px-5 md:px-20">
+<div class="w-full h-full mt-10 space-y-5 px-5 md:px-20 overflow-x-hidden overflow-y-hidden">
 	<!-- search field -->
 	<Search
 		on:input={() => {
