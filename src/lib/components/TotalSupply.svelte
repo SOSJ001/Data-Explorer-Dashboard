@@ -2,7 +2,11 @@
 	import { connection } from '$lib/utils/connection';
 	import { supplyResponse } from '$lib/utils/getSupply';
 	import { LAMPORTS_PER_SOL } from '@solana/web3.js';
-    let displaySupply  = $connection.getSupply();
+    import { Skeleton } from 'flowbite-svelte'
+    let displaySupply:any
+    $:{
+		  displaySupply  = $connection.getSupply();
+	}
 </script>
 {#await displaySupply}
     <span>loading...</span>

@@ -32,19 +32,24 @@
 	}; //   transition ends
 </script>
 
-<div class="w-screen h-screen overflow-hidden">
-	<Navbar>
-		<span slot="clusterDrawer">
-			<Button on:click={() => {hidden6 = false;}}>{cluster}</Button>
-		</span>
-	</Navbar>
-	<slot></slot>
-</div>
 
-
-
-
-<!-- cluster drawer below -->
+<div class="h-screen w-screen overflow-hidden">
+	
+	<div class="h- m-5">
+		<Navbar>
+			<span slot="clusterDrawer">
+				<Button
+					on:click={() => {
+						hidden6 = false;
+					}}>{cluster}</Button
+				>
+			</span>
+		</Navbar>
+		<div>
+			<slot></slot>
+		</div>
+	</div>
+	<!-- cluster drawer below -->
 <Drawer
 	class="bg-gray-800 text-white"
 	placement="right"
@@ -81,3 +86,4 @@
 		>
 	</div>
 </Drawer>
+</div>

@@ -2,8 +2,11 @@
 	import { connection } from '$lib/utils/connection';
 	import { supplyResponse } from '$lib/utils/getSupply';
 	import { LAMPORTS_PER_SOL } from '@solana/web3.js';
-    let displaySupply  = $connection.getVoteAccounts();
-    displaySupply.then(value => console.log(value.delinquent.length))
+    let displaySupply:any
+	$:{
+		  displaySupply  = $connection.getVoteAccounts();
+	}    
+    // displaySupply.then(value => console.log(value.delinquent.length))
 </script>
 {#await displaySupply}
     <span>loading...</span>
